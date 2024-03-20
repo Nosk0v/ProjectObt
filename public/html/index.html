@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <style>
+        body {
+            margin-top: 150pt;
+            background-color: #85a0c4;
+        }
+        .custom-container {
+            margin-top: 150pt;
+            background-color: #85a0c4;
+        }
+        .custom-form {
+            background-color: #6487b5;
+            border: solid white;
+            border-radius: 7pt;
+            padding: 20px; /* Добавлено для отступа внутри формы */
+        }
+    </style>
+</head>
+<body>
+    <div class="container custom-container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 text-center">
+                <div class="custom-form"> <!-- Добавлен класс custom-form -->
+                    <h3 style="color: white;">Авторизация</h3>
+                    <div class="form-group">
+                        <label style="color: white;" for="login">Введите адрес владельца</label>
+                        <input style="border-bottom-right-radius: 15pt;border-top-left-radius: 15pt;background-color: #0400ff; color: white ; border-color: white;" type="text" autocomplete="off" class="form-control" id="login" placeholder="ваш адрес">
+                        <label style="color: white; margin-top: 5pt;" for="password">Введите пароль (для администраторов)</label>
+                        <input style="border-bottom-right-radius: 15pt;border-top-left-radius: 15pt;background-color: #0400ff; color: white ; border-color: white;" type="password" class="form-control" id="password" placeholder="пароль администратора">
+                       
+                        <button onclick="loginAsGuest()" style="width: 100%; border-radius: 10pt; margin-top: 5pt; background-color: #0400ff; border-color: white;" class="btn btn-primary">
+                            <label style="color: white;">
+                                Войти
+                            </label>
+                        </button>
+                        
+                        <button id="comeByAdmin" onclick="comeByAdmin()" style="width: 100%; border-radius: 10pt; margin-top: 5pt; background-color: #0400ff; border-color: white;" class="btn btn-primary">
+                            <label id="accept" style="color: white;">
+                                Войти как администратор
+                            </label>
+                        </button>
+                        
+                        <label style="color: white; font-style: italic;" id="auth"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/sha1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/socket.io.min.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
+    <script type="text/javascript" src="./js/app.js"></script>
+</body>
+</html>
