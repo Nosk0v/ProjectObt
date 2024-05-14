@@ -1,6 +1,6 @@
 const Estate = artifacts.require("Estate");
 
-contract("Estate", function(accounts) {
+contract("Estate", function (accounts) {
     let estateInstance;
 
     before(async () => {
@@ -29,7 +29,7 @@ contract("Estate", function(accounts) {
         } catch (error) {
             assert.include(error.message, "Sale must be active", "Error message should include 'Sale must be active'");
         }
-    });  
+    });
 
     it("should create an estate with correct details", async () => { // Проверяет создание недвижимости с правильными данными
         const owner = accounts[1];
@@ -68,5 +68,66 @@ contract("Estate", function(accounts) {
 
         assert.isAtLeast(finalAccountBalance, expectedAccountBalance - 1, "Account 0 balance is less than expected");
         assert.isAtMost(finalAccountBalance, expectedAccountBalance + 1, "Account 0 balance is more than expected");
+    });
+
+    it("should not create an estate if not admin", async () => {
+        try {
+            await estateInstance.create_estate(accounts[1], "info", 100, { from: accounts[1] });
+            assert.fail("Expected an error");
+        } catch (error) {
+            assert.include(error.message, "You are not admin", "Error message should include 'You are not admin'");
+        }
+    });
+    it("should create an estate with correct details", async () => { // Проверяет создание недвижимости с правильными данными
+        const owner = accounts[1];
+        const info = "House in the city";
+        const square = 200;
+        const adminAddress = accounts[0];
+        const adminPassword = "password123";
+    
+        await estateInstance.set_admin(adminAddress, adminPassword);
+        await estateInstance.create_estate(owner, info, square);
+    
+        const resultOwner = await estateInstance.show_name(0);
+        assert.equal(resultOwner, owner, "Estate owner is not set correctly");
+    
+        const resultInfo = await estateInstance.show_info(0);
+        assert.equal(resultInfo, info, "Estate info is not set correctly");
+    
+        const resultSquare = await estateInstance.show_square(0);
+        assert.equal(resultSquare, square, "Estate square is not set correctly");
+    
+        const resultStatus = await estateInstance.show_status(0);
+        assert.equal(resultStatus, false, "Estate sale status is not set correctly");
+    });
+    
+    it("should not create an estate if not admin", async () => {
+        try {
+            await estateInstance.create_estate(accounts[1], "info", 100, { from: accounts[1] });
+            assert.fail("Expected an error");
+        } catch (error) {
+            assert.include(error.message, "You are not admin", "Error message should include 'You are not admin'");
+        }
+    });
+    
+    it("should not set admin without password", async () => {
+        try {
+            await estateInstance.confirm_sale(0, 0, accounts[0], { from: accounts[0] });
+        } catch (error) {
+            assert.include(error.message, "Sale must be active", "Error message should include 'Sale must be active'");
+        }
+    });
+
+    it("should not confirm sale if sale is not active", async () => { // Проверяет, что продажа не может быть подтверждена, если она не активна
+        const saleId = 0;
+        const userId = 0;
+        const owner = accounts[0];
+    
+        try {
+            await estateInstance.confirm_sale(saleId, userId, owner, { from: owner });
+            assert.fail("Expected an error");
+        } catch (error) {
+            assert.include(error.message, "Sale must be active", "Error message should include 'Sale must be active'");
+        }
     });
 });
