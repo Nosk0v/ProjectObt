@@ -101,7 +101,7 @@ contract("Estate", function (accounts) {
         assert.equal(resultStatus, false, "Estate sale status is not set correctly");
     });
     
-    it("should not create an estate if not admin", async () => {
+    it("should not create an estate if not user", async () => {
         try {
             await estateInstance.create_estate(accounts[1], "info", 100, { from: accounts[1] });
             assert.fail("Expected an error");
